@@ -7,16 +7,42 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
+import {CheckBox, Icon} from '@rneui/themed';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
 export const LoginForm = () => {
+  const [check4, setCheck4] = React.useState(false);
   return (
     <View style={styles.container}>
       <TextInput style={styles.input} placeholder="Adınızı Soyadınız" />
       <TextInput style={styles.input} placeholder="Cep Numaranız" />
-      <View style={styles.footerformContainer}></View>
+      <View style={styles.footerformContainer}>
+      <CheckBox
+      center
+      checkedIcon={
+        <Icon
+          name="check-box-outline-blank"
+          type="material"
+          color="grey"
+          size={25}
+          iconStyle={{ marginRight: 10 }}
+        />
+      }
+      uncheckedIcon={
+        <Icon
+          name="check-box"
+          type="material"
+          color="grey"
+          size={25}
+          iconStyle={{ marginRight: 10 }}
+        />
+      }
+      checked={check4}
+      onPress={() => setCheck4(!check4)}
+    />
+      </View>
       <View style={styles.submitButtonContainer}>
         <TouchableOpacity style={styles.submitButton}>
           <Text style={styles.submitButtonText}>Tasarımı Takip Et</Text>
@@ -42,16 +68,15 @@ const styles = StyleSheet.create({
     borderLeftWidth: 4,
     backgroundColor: '#E8E8E8',
     borderLeftColor: '#00D8C1',
-    color: '#BFBFBF'
+    color: '#BFBFBF',
   },
   footerformContainer: {
+    flex: 1,
     width: width - 150,
     height: 30,
     margin: 12,
     flexDirection: 'column',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'black',
   },
   submitButtonContainer: {
     margin: 12,
@@ -72,5 +97,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
-  }
+  },
 });
