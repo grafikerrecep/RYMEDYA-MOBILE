@@ -1,17 +1,17 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, Dimensions} from 'react-native';
 import {WebSitePageButton} from '../components/WebSitePageButton';
-import { LoginForm } from '../components/LoginForm';
+import {LoginForm} from '../components/LoginForm';
 
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 function Home() {
   return (
     <View style={styles.container}>
       <View style={styles.headerImageView}>
         <Image
           style={styles.headerImage}
-          source={{
-            uri: 'https://nebosan.com.tr/wp-content/uploads/2018/06/no-image.jpg',
-          }}
+          source={require('../assets/images/rymedya.png')}
         />
       </View>
       <View style={styles.homePageButtonContainer}>
@@ -41,22 +41,24 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   headerImage: {
-    width: 200,
-    height: 120,
+  
   },
   homePageButtonContainer: {
     marginTop: 25,
   },
   subTitleContainer: {
-    marginTop: 35,
+    marginTop: 50,
   },
   subTitle: {
-    fontSize: 18,
+    fontSize: 19,
     color: '#733eb2',
-    fontWeight: '450',
+    fontWeight: '490',
   },
   formContainer: {
-    marginTop: 75,
+    marginTop: 50,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   formTitle: {
     fontSize: 18,
@@ -64,9 +66,9 @@ const styles = StyleSheet.create({
   },
   formLines: {
     borderBottomColor: '#62d5c1',
-    borderBottomWidth: 2,
+    borderBottomWidth: 1.5,
     width: 35,
-    marginLeft: 20,
+    marginLeft: 0,
     marginTop: 5,
   },
 });
