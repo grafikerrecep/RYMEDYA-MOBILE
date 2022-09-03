@@ -57,7 +57,6 @@ export const LoginForm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderWidth:1,
   },
   input: {
     width: width * 0.7,
