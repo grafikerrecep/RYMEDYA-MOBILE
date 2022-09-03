@@ -20,6 +20,9 @@ export const LoginForm = () => {
       <TextInput style={styles.input} placeholder="Cep Numaranız" />
       <View style={styles.footerformContainer}>
       <CheckBox
+      title="Oturumu açık tutun"
+      titleStyle={{color:'#353532'}}
+      containerStyle={{backgroundColor :'transparent'}}
       center
       checkedIcon={
         <Icon
@@ -27,7 +30,6 @@ export const LoginForm = () => {
           type="material"
           color="grey"
           size={25}
-          iconStyle={{ marginRight: 10 }}
         />
       }
       uncheckedIcon={
@@ -36,12 +38,12 @@ export const LoginForm = () => {
           type="material"
           color="grey"
           size={25}
-          iconStyle={{ marginRight: 10 }}
         />
       }
       checked={check4}
       onPress={() => setCheck4(!check4)}
     />
+    <Text style={{lineHeight :58,fontWeight:'bold',fontSize:12,color:'#353532',}}>Üyelik Sözleşmesi?</Text>
       </View>
       <View style={styles.submitButtonContainer}>
         <TouchableOpacity style={styles.submitButton}>
@@ -55,9 +57,10 @@ export const LoginForm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    borderWidth:1,
   },
   input: {
-    width: width - 150,
+    width: width * 0.7,
     height: 40,
     margin: 12,
     paddingLeft: 12,
@@ -71,11 +74,9 @@ const styles = StyleSheet.create({
     color: '#BFBFBF',
   },
   footerformContainer: {
-    flex: 1,
-    width: width - 150,
-    height: 30,
-    margin: 12,
-    flexDirection: 'column',
+    width: width * 0.7,
+    margin : 5,
+    flexDirection: 'row',
     justifyContent: 'center',
   },
   submitButtonContainer: {
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
     width: width - 150,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf:'center',
     marginTop: 10,
   },
   submitButton: {
@@ -91,6 +93,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00D8C1',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf:'center',
     borderRadius: 20,
   },
   submitButtonText: {

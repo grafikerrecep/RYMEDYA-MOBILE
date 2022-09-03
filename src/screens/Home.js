@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    marginTop:20,
   },
   headerImageView: {
     marginTop: 50,
