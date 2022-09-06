@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,45 +8,85 @@ import {
   Text,
 } from 'react-native';
 import {CheckBox, Icon} from '@rneui/themed';
+import {login} from '../services/auth/login.services';
+import axios from 'axios';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
+const followDesign = (name, phone) => {
+  console.log(name);
+  console.log(phone);
+  login(name, phone);
+};
+
 export const LoginForm = () => {
   const [check4, setCheck4] = React.useState(false);
+  const [name, setName] = useState('Doğukan Karasansar');
+  const [phone, setPhone] = useState('+905340741203');
+  useEffect(() => {
+    /* axios
+      .post('http://localhost:8000/api/login', {
+        name: name,
+        phone: phone,
+      },{
+        headers: {
+          'Content-Type': 'application/json',
+          'Acess-Control-Allow-Origin': '*',
+        },
+      })
+      .then(response => {
+        console.log(response.data);
+      }); */
+  }, []);
   return (
     <View style={styles.container}>
-      <TextInput style={styles.input} placeholder="Adınızı Soyadınız" />
-      <TextInput style={styles.input} placeholder="Cep Numaranız" />
+      <TextInput
+        style={styles.input}
+        placeholder="Adınızı Soyadınız"
+        value={name}
+        onChangeText={value => setName(value)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Cep Numaranız"
+        value={phone}
+        onChangeText={value => setPhone(value)}
+      />
       <View style={styles.footerformContainer}>
-      <CheckBox
-      title="Oturumu açık tutun"
-      titleStyle={{color:'#353532'}}
-      containerStyle={{backgroundColor :'transparent'}}
-      center
-      checkedIcon={
-        <Icon
-          name="check-box-outline-blank"
-          type="material"
-          color="grey"
-          size={25}
+        <CheckBox
+          title="Oturumu açık tutun"
+          titleStyle={{color: '#353532'}}
+          containerStyle={{backgroundColor: 'transparent'}}
+          center
+          checkedIcon={
+            <Icon
+              name="check-box-outline-blank"
+              type="material"
+              color="grey"
+              size={25}
+            />
+          }
+          uncheckedIcon={
+            <Icon name="check-box" type="material" color="grey" size={25} />
+          }
+          checked={check4}
+          onPress={() => setCheck4(!check4)}
         />
-      }
-      uncheckedIcon={
-        <Icon
-          name="check-box"
-          type="material"
-          color="grey"
-          size={25}
-        />
-      }
-      checked={check4}
-      onPress={() => setCheck4(!check4)}
-    />
-    <Text style={{lineHeight :58,fontWeight:'bold',fontSize:12,color:'#353532',}}>Üyelik Sözleşmesi?</Text>
+        <Text
+          style={{
+            lineHeight: 58,
+            fontWeight: 'bold',
+            fontSize: 12,
+            color: '#353532',
+          }}>
+          Üyelik Sözleşmesi?
+        </Text>
       </View>
       <View style={styles.submitButtonContainer}>
-        <TouchableOpacity style={styles.submitButton}>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={() => followDesign(name, phone)}>
           <Text style={styles.submitButtonText}>Tasarımı Takip Et</Text>
         </TouchableOpacity>
       </View>
@@ -74,7 +114,7 @@ const styles = StyleSheet.create({
   },
   footerformContainer: {
     width: width * 0.7,
-    margin : 5,
+    margin: 5,
     flexDirection: 'row',
     justifyContent: 'center',
   },
@@ -83,7 +123,7 @@ const styles = StyleSheet.create({
     width: width - 150,
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf:'center',
+    alignSelf: 'center',
     marginTop: 10,
   },
   submitButton: {
@@ -92,7 +132,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00D8C1',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf:'center',
+    alignSelf: 'center',
     borderRadius: 20,
   },
   submitButtonText: {
