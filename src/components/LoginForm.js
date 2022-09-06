@@ -10,35 +10,25 @@ import {
 import {CheckBox, Icon} from '@rneui/themed';
 import {login} from '../services/auth/login.services';
 import axios from 'axios';
+import {AuthContext} from '../context/AuthContext';
+
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
+const {signIn} = React.useContext(AuthContext);
 
-const followDesign = (name, phone) => {
+
+const followDesign = (name, phone, check) => {
   console.log(name);
   console.log(phone);
-  login(name, phone);
+  signIn({name, phone, check});
 };
 
 export const LoginForm = () => {
   const [check4, setCheck4] = React.useState(false);
   const [name, setName] = useState('Doğukan Karasansar');
   const [phone, setPhone] = useState('+905340741203');
-  useEffect(() => {
-    /* axios
-      .post('http://localhost:8000/api/login', {
-        name: name,
-        phone: phone,
-      },{
-        headers: {
-          'Content-Type': 'application/json',
-          'Acess-Control-Allow-Origin': '*',
-        },
-      })
-      .then(response => {
-        console.log(response.data);
-      }); */
-  }, []);
+
   return (
     <View style={styles.container}>
       <TextInput
@@ -86,7 +76,7 @@ export const LoginForm = () => {
       <View style={styles.submitButtonContainer}>
         <TouchableOpacity
           style={styles.submitButton}
-          onPress={() => followDesign(name, phone)}>
+          onPress={() => followDesign(name, phone, check4)}>
           <Text style={styles.submitButtonText}>Tasarımı Takip Et</Text>
         </TouchableOpacity>
       </View>

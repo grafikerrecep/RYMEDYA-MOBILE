@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import Home from '../screens/Home';
 /* Screens */
+import Home from '../screens/Home';
 
 const Stack = createNativeStackNavigator();
 
