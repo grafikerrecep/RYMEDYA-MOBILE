@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const login = (name, phone) => {
    var response = axios
-    .post(`${API_URL}/login`, {
+    .post(`${API_URL}/api/login`, {
       name: name,
       phone: phone,
     })

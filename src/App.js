@@ -6,6 +6,7 @@ import {Text, View} from 'react-native';
 import {AuthContext} from './context/AuthContext';
 import {login} from './services/auth/login.services';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
@@ -46,6 +47,7 @@ export default function App() {
 
       try {
         userToken = await AsyncStorage.getItem('userToken');
+        axios.defaults.headers.common = { 'Authorization': `Bearer ${response.data.api_token}` };
       } catch (e) {
         // Restoring token failed
       }
@@ -69,7 +71,10 @@ export default function App() {
         userData.then(response => {
           if (response.data) {
             dispatch({type: 'SIGN_IN', token: response.data.api_token});
-            AsyncStorage.setItem('userToken', response.data.api_token);
+            axios.defaults.headers.common = { 'Authorization': `Bearer ${response.data.api_token}` };
+            if (data.check) {
+              AsyncStorage.setItem('userToken', response.data.api_token);
+            }
           }
         });
         setIsLoading(false);

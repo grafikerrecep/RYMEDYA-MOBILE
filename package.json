@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "start:development": "NODE_ENV=development npx react-native start",
+    "start:production": "NODE_ENV=production npx react-native start"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.10",

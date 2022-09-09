@@ -19,6 +19,7 @@ const {signIn} = React.useContext(AuthContext);
 
 
 const followDesign = (name, phone, check) => {
+  console.log(check);
   console.log(name);
   console.log(phone);
   signIn({name, phone, check});
@@ -51,14 +52,14 @@ export const LoginForm = () => {
           center
           checkedIcon={
             <Icon
-              name="check-box-outline-blank"
+              name="check-box"
               type="material"
               color="grey"
               size={25}
             />
           }
           uncheckedIcon={
-            <Icon name="check-box" type="material" color="grey" size={25} />
+            <Icon name="check-box-outline-blank" type="material" color="grey" size={25} />
           }
           checked={check4}
           onPress={() => setCheck4(!check4)}
