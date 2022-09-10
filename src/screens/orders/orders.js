@@ -1,31 +1,35 @@
 import React, {useEffect} from 'react';
-import {Button, Text, View} from 'react-native';
-import {AuthContext} from '../../context/AuthContext';
+import {View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {getOrders} from '../../redux/actions/orderAction';
+import Header from '../../components/Header';
+import { FloatingButton } from '../../components/FloatingButton';
 
 function Orders(props) {
-  const {signOut} = React.useContext(AuthContext);
-
   useEffect(() => {
     props.dispatch(getOrders());
   }, []);
 
   console.log(props.orders);
   return (
-    <View>
-      <Text>Orders</Text>
-      <Button
-        title="Sign out"
-        onPress={() => {
-          signOut();
-        }}
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <Header />
+      </View>
+      <FloatingButton />
+    </>
   );
 }
 
-function mapStateToProps(state, props) {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+});
+
+function mapStateToProps(state) {
   return {orders: state.orderReducer.orders};
 }
 
