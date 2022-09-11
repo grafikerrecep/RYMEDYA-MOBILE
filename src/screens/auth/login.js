@@ -3,11 +3,6 @@ import {View, Text, Image, StyleSheet, Dimensions} from 'react-native';
 import {WebSitePageButton} from '../../components/WebSitePageButton';
 import {LoginForm} from '../../components/LoginForm';
 
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
-
-
-
 function Login() {
   return (
     <View style={styles.container}>

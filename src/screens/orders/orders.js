@@ -3,18 +3,19 @@ import {View, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
 import {getOrders} from '../../redux/actions/orderAction';
 import Header from '../../components/Header';
-import { FloatingButton } from '../../components/FloatingButton';
+import {FloatingButton} from '../../components/FloatingButton';
+import {DataList} from '../../components/DataList';
 
 function Orders(props) {
   useEffect(() => {
     props.dispatch(getOrders());
   }, []);
 
-  console.log(props.orders);
   return (
     <>
       <View style={styles.container}>
         <Header />
+        <DataList datas={props.orders} />
       </View>
       <FloatingButton />
     </>
@@ -24,7 +25,6 @@ function Orders(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: '#fff',
   },
 });

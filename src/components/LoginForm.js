@@ -19,9 +19,6 @@ const {signIn} = React.useContext(AuthContext);
 
 
 const followDesign = (name, phone, check) => {
-  console.log(check);
-  console.log(name);
-  console.log(phone);
   signIn({name, phone, check});
 };
 
@@ -91,7 +88,7 @@ const styles = StyleSheet.create({
   },
   input: {
     width: width * 0.7,
-    height: 40,
+    height: 47,
     margin: 12,
     paddingLeft: 12,
     borderWidth: 1,
