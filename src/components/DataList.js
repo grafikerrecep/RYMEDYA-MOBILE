@@ -61,16 +61,14 @@ const renderItem = ({item}) => {
 };
 
 export function DataList(props) {
-  const {datas} = props;
-  console.log(datas);
   return (
     <>
       <SafeAreaView>
-        {datas.length > 0 ? (
+        {props.datas.length > 0 ? (
           <FlatList
             style={styles.list}
             numColumns={2}
-            data={datas}
+            data={props.datas}
             renderItem={renderItem}
             keyExtractor={item => item.id}
           />
@@ -86,7 +84,7 @@ export function DataList(props) {
 
 const styles = StyleSheet.create({
   list: {
-    marginVertical: 10,
+    marginVertical: 20,
   },
   noDataContainer: {
     flex: 1,
@@ -105,6 +103,7 @@ const styles = StyleSheet.create({
     margin: 10,
     height: 150,
     backgroundColor: '#FFF5E4',
+    marginVertical: 20,
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: {

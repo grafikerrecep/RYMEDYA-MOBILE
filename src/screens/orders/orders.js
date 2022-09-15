@@ -1,21 +1,22 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, StyleSheet} from 'react-native';
-import {connect} from 'react-redux';
-import {getOrders} from '../../redux/actions/orderAction';
 import Header from '../../components/Header';
 import {FloatingButton} from '../../components/FloatingButton';
 import {DataList} from '../../components/DataList';
+import { getOrders } from '../../services/orders/order';
 
-function Orders(props) {
+function Orders() {
+  const [orders, setOrders] = useState([]);
+
   useEffect(() => {
-    props.dispatch(getOrders());
+    getOrders(setOrders);
   }, []);
 
   return (
     <>
       <View style={styles.container}>
         <Header />
-        <DataList datas={props.orders} />
+        <DataList datas={orders} />
       </View>
       <FloatingButton />
     </>
@@ -29,8 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
-  return {orders: state.orderReducer.orders};
-}
-
-export default connect(mapStateToProps)(Orders);
+export default Orders;

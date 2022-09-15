@@ -10,7 +10,6 @@ import axios from 'axios';
 import configureStore from './redux/configureStore';
 import {Provider} from 'react-redux';
 
-
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [state, dispatch] = React.useReducer(
@@ -20,6 +19,7 @@ export default function App() {
           return {
             ...prevState,
             userToken: action.token,
+            isAdmin: action.isAdmin,
             isLoading: false,
           };
         case 'SIGN_IN':
@@ -27,6 +27,7 @@ export default function App() {
             ...prevState,
             isSignout: false,
             userToken: action.token,
+            isAdmin: action.isAdmin,
           };
         case 'SIGN_OUT':
           return {
@@ -46,12 +47,13 @@ export default function App() {
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
-      let userToken;
+      let userToken, isAdmin;
 
       try {
-        userToken = await AsyncStorage.getItem('userToken');
+        userToken = await AsyncStorage.getItem('userToken').then(value => value);
+        isAdmin = await AsyncStorage.getItem('isAdmin').then(value => value);
         axios.defaults.headers.common = {
-          Authorization: `Bearer ${response.data.api_token}`,
+          Authorization: `Bearer ${userToken}`,
         };
       } catch (e) {
         // Restoring token failed
@@ -61,7 +63,7 @@ export default function App() {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({type: 'RESTORE_TOKEN', token: userToken});
+      dispatch({type: 'RESTORE_TOKEN', token: userToken, isAdmin: isAdmin});
     };
 
     bootstrapAsync();
@@ -75,12 +77,14 @@ export default function App() {
         const userData = login(data.name, data.phone);
         userData.then(response => {
           if (response.data) {
-            dispatch({type: 'SIGN_IN', token: response.data.api_token});
+            console.log(response.data);
+            dispatch({type: 'SIGN_IN', token: response.data.user.api_token, isAdmin: response.data.isAdmin});
             axios.defaults.headers.common = {
-              Authorization: `Bearer ${response.data.api_token}`,
+              Authorization: `Bearer ${response.data.user.api_token}`,
             };
             if (data.check) {
-              AsyncStorage.setItem('userToken', response.data.api_token);
+              AsyncStorage.setItem('userToken', response.data.user.api_token);
+              AsyncStorage.setItem('isAdmib', response.data.is_admin);
             }
           }
         });
@@ -115,16 +119,16 @@ export default function App() {
   const store = configureStore();
 
   return (
-    <Provider store={store}>
-      <AuthContext.Provider value={authContext}>
-        <NavigationContainer>
-          {state.userToken == null ? (
-            <AuthStackNavigator />
-          ) : (
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer>
+        {state.userToken == null ? (
+          <AuthStackNavigator />
+        ) : (
+          <Provider store={store}>
             <MainStackNavigator />
-          )}
-        </NavigationContainer>
-      </AuthContext.Provider>
-    </Provider>
+          </Provider>
+        )}
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
