@@ -5,7 +5,7 @@ import {FloatingButton} from '../../components/FloatingButton';
 import {DataList} from '../../components/DataList';
 import { getOrders } from '../../services/orders/order';
 
-function Orders() {
+function Orders({navigation}) {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function Orders() {
     <>
       <View style={styles.container}>
         <Header />
-        <DataList datas={orders} />
+        <DataList datas={orders} navigation={navigation}/>
       </View>
       <FloatingButton />
     </>

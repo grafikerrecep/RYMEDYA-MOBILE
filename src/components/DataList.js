@@ -7,60 +7,66 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
-const Item = ({item}) => {
-  return (
-    <>
-      <TouchableOpacity onPress={() => console.log('click')}>
-        <View style={styles.card}>
-          <View style={styles.statusIcon}>
-            <Icon
-              type="material"
-              name={
-                item.status === 'accepted'
-                  ? 'check-circle-outline'
-                  : item.status === 'pending'
-                  ? 'hourglass-bottom'
-                  : 'priority-high'
-              }
-              size={30}
-              color={
-                item.status === 'accepted'
-                  ? '#C3FF99'
-                  : item.status === 'pending'
-                  ? '#FFDE00'
-                  : '#FF4A4A'
-              }
-            />
-          </View>
-          <View
-            style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={styles.title}>{item.order_info}</Text>
-          </View>
-          <View style={styles.subTextContainer}>
-            <Text style={styles.subText}>
-              <Text style={{fontWeight: 'bold', color: 'black'}}>
-                Sipariş Id -
-              </Text>{' '}
-              {item.uuid}
-            </Text>
-            <Text style={styles.subText}>
-              <Text style={{fontWeight: 'bold', color: 'black'}}>
-                Sipariş Tarihi -
-              </Text>{' '}
-              {item.created_at}
-            </Text>
-          </View>
-        </View>
-      </TouchableOpacity>
-    </>
-  );
-};
 
-const renderItem = ({item}) => {
-  return <Item item={item} />;
-};
+
 
 export function DataList(props) {
+
+  const Item = ({item, navigation}) => {
+    return (
+      <>
+        <TouchableOpacity onPress={() => navigation.navigate('OrderDetail', {
+          itemId: item.id,
+        })}>
+          <View style={styles.card}>
+            <View style={styles.statusIcon}>
+              <Icon
+                type="material"
+                name={
+                  item.status === 'accepted'
+                    ? 'check-circle-outline'
+                    : item.status === 'pending'
+                    ? 'hourglass-bottom'
+                    : 'priority-high'
+                }
+                size={30}
+                color={
+                  item.status === 'accepted'
+                    ? '#C3FF99'
+                    : item.status === 'pending'
+                    ? '#FFDE00'
+                    : '#FF4A4A'
+                }
+              />
+            </View>
+            <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={styles.title}>{item.order_info}</Text>
+            </View>
+            <View style={styles.subTextContainer}>
+              <Text style={styles.subText}>
+                <Text style={{fontWeight: 'bold', color: 'black'}}>
+                  Sipariş Id -
+                </Text>{' '}
+                {item.uuid}
+              </Text>
+              <Text style={styles.subText}>
+                <Text style={{fontWeight: 'bold', color: 'black'}}>
+                  Sipariş Tarihi -
+                </Text>{' '}
+                {item.created_at}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </>
+    );
+  };
+
+  const RenderItem = ({item, navigation}) => {
+    return <Item item={item} navigation={navigation}/>;
+  };
+
   return (
     <>
       <SafeAreaView>
@@ -69,7 +75,7 @@ export function DataList(props) {
             style={styles.list}
             numColumns={2}
             data={props.datas}
-            renderItem={renderItem}
+            renderItem={({item}) => <RenderItem item={item} navigation={props.navigation}/>}
             keyExtractor={item => item.id}
           />
         ) : (

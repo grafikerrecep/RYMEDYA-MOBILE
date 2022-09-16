@@ -8,3 +8,10 @@ export const getOrders = setOrders => {
     setOrders(res.data.data);
   });
 };
+
+export const getOrder = (id, setOrder) => {
+  axios.get(`${API_URL}/api/offer/${id}`).then(res => {
+    console.log(res.data);
+    setOrder(res.data.data);
+  });
+}
