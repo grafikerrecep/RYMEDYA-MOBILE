@@ -1,96 +1,139 @@
-import {Icon} from '@rneui/base';
 import React from 'react';
 import {Image, View} from 'react-native';
-import {FlatList, Text, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
+import {
+  FlatList,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {Icon} from '@rneui/themed';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
-
-
-
 export function DataList(props) {
-
   const Item = ({item, navigation}) => {
+    console.log(item.customer[0].name);
     return (
       <>
-        <TouchableOpacity onPress={() => navigation.navigate('OrderDetail', {
-          itemId: item.id,
-        })}>
-          <View style={styles.card}>
-            <View style={styles.statusIcon}>
-              <Icon
-                type="material"
-                name={
-                  item.status === 'accepted'
-                    ? 'check-circle-outline'
-                    : item.status === 'pending'
-                    ? 'hourglass-bottom'
-                    : 'priority-high'
-                }
-                size={30}
-                color={
-                  item.status === 'accepted'
-                    ? '#C3FF99'
-                    : item.status === 'pending'
-                    ? '#FFDE00'
-                    : '#FF4A4A'
-                }
-              />
-            </View>
-            <View
-              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-              <Text style={styles.title}>{item.order_info}</Text>
-            </View>
-            <View style={styles.subTextContainer}>
-              <Text style={styles.subText}>
-                <Text style={{fontWeight: 'bold', color: 'black'}}>
-                  Sipariş Id -
-                </Text>{' '}
-                {item.uuid}
-              </Text>
-              <Text style={styles.subText}>
-                <Text style={{fontWeight: 'bold', color: 'black'}}>
-                  Sipariş Tarihi -
-                </Text>{' '}
-                {item.created_at}
-              </Text>
-            </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            width: '50%',
+            justifyContent: 'center',
+            marginLeft: 35,
+          }}>
+          <Text
+            style={{
+              marginLeft: 0,
+              color: '#353532',
+              fontSize: 15,
+              fontWeight: '400',
+            }}>
+            {item.customer[0].name}
+          </Text>
+          <Text
+            style={{
+              marginLeft: 0,
+              color: '#353532',
+              fontSize: 15,
+              fontWeight: '400',
+            }}>
+            {item.order_info} -{' '}
+            {item.status === 'accepted'
+              ? 'Onaylandı'
+              : item.status === 'pending'
+              ? 'Beklemede'
+              : 'Reddedildi'}
+          </Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            width: '50%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              width: width * 0.4,
+              height: 40,
+              backgroundColor: '#00D8C1',
+              zIndex: 100,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 25
+            }}>
+            <Text
+              style={{
+                marginLeft: 0,
+                color: 'white',
+                fontSize: 15,
+                fontWeight: '800',
+              }}>
+              {item.created_at}
+            </Text>
           </View>
-        </TouchableOpacity>
+        </View>
       </>
     );
   };
 
   const RenderItem = ({item, navigation}) => {
-    return <Item item={item} navigation={navigation}/>;
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('OrderDetail', {
+            itemId: item.id,
+          })
+        }
+        style={[
+          styles.list,
+          {backgroundColor: parseInt(item.id) % 2 === 0 ? 'white' : '#E8E8E8'},
+        ]}>
+        <Item item={item} navigation={navigation} />
+      </TouchableOpacity>
+    );
   };
 
   return (
     <>
-      <SafeAreaView>
-        {props.datas.length > 0 ? (
-          <FlatList
-            style={styles.list}
-            numColumns={2}
-            data={props.datas}
-            renderItem={({item}) => <RenderItem item={item} navigation={props.navigation}/>}
-            keyExtractor={item => item.id}
-          />
-        ) : (
-          <View style={styles.noDataContainer}>
-            <Text style={styles.noDataText}>Sipariş Bulunamadı :(</Text>
-          </View>
-        )}
-      </SafeAreaView>
+      {props.datas.length > 0 ? (
+        <FlatList
+          style={{flex: 1, width: '100%', flexDirection: 'row'}}
+          numColumns={1}
+          data={props.datas}
+          renderItem={({item}) => (
+            <RenderItem item={item} navigation={props.navigation} />
+          )}
+          keyExtractor={item => item.id}
+        />
+      ) : (
+        <View style={styles.noDataContainer}>
+          <Text style={styles.noDataText}>Sipariş Bulunamadı :(</Text>
+        </View>
+      )}
     </>
   );
 }
 
 const styles = StyleSheet.create({
   list: {
-    marginVertical: 20,
+    flexDirection: 'row',
+    width: width,
+    height: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
   },
   noDataContainer: {
     flex: 1,
@@ -103,23 +146,10 @@ const styles = StyleSheet.create({
     color: '#23C6FC',
   },
   card: {
-    flex: 1,
-    flexDirection: 'column',
-    width: width * 0.4,
-    margin: 10,
-    height: 150,
-    backgroundColor: '#FFF5E4',
+    width: width,
+    height: 50,
     marginVertical: 20,
     borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.32,
-    shadowRadius: 5.46,
-
-    elevation: 9,
   },
   title: {
     fontSize: 15,
