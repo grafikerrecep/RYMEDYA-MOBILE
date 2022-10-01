@@ -1,10 +1,81 @@
 import {Button, Icon} from '@rneui/themed';
+import {API_URL} from '@env';
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  PermissionsAndroid,
+} from 'react-native';
+import RNFetchBlob from 'rn-fetch-blob';
 
 function DownloadDesign(props) {
   const [path, setPath] = useState('');
   const {image} = props;
+
+  const checkPermission = async () => {
+    if (Platform.OS === 'ios') {
+      downloadImage();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'Kamera izni gerekli',
+            message:
+              'Uygulama dosyalarını indirmek için cihazınıza erişim izni vermeniz gerekiyor.',
+            buttonNeutral: 'Daha sonra sor',
+            buttonNegative: 'İptal',
+            buttonPositive: 'OK',
+          },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('You can use the camera');
+          downloadImage();
+        } else {
+          console.log('Camera permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
+
+  const downloadImage = () => {
+    if (path) {
+      const date = new Date();
+      const image_URL = API_URL + `/${path}`;
+      console.log(image_URL);
+      let ext = getExtention(image_URL);
+      ext = '.' + ext[0];
+      const {config, fs} = RNFetchBlob;
+      let PictureDir = fs.dirs.PictureDir;
+      let options = {
+        fileCache: true,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path:
+            PictureDir +
+            '/image_' +
+            Math.floor(date.getTime() + date.getSeconds() / 2) +
+            ext,
+          description: 'Image',
+        },
+      };
+      config(options)
+        .fetch('GET', image_URL)
+        .then(res => {
+          console.log('res -> ', JSON.stringify(res));
+          alert('Dosya indirildi.');
+        });
+    }
+  };
+
+  const getExtention = filename => {
+    return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined;
+  };
 
   useEffect(() => {
     if (image) {
@@ -32,9 +103,14 @@ function DownloadDesign(props) {
             alignItems: 'center',
             marginRight: 30,
           }}>
-            <TouchableOpacity>
-            <Icon type="material" name="file-download" size={30} color="black" />
-            </TouchableOpacity>
+          <TouchableOpacity onPress={checkPermission}>
+            <Icon
+              type="material"
+              name="file-download"
+              size={30}
+              color="black"
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </>
