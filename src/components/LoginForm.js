@@ -24,7 +24,7 @@ const followDesign = (name, phone, check) => {
 
 export const LoginForm = () => {
   const [check4, setCheck4] = React.useState(false);
-  const [name, setName] = useState('Doğukan Karasansar');
+  const [name, setName] = useState('test kullanıcısı');
   const [phone, setPhone] = useState('+905340741203');
 
   return (

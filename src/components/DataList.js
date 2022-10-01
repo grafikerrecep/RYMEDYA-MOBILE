@@ -15,7 +15,6 @@ const height = Dimensions.get('window').height;
 
 export function DataList(props) {
   const Item = ({item, navigation}) => {
-    console.log(item.customer[0].name);
     return (
       <>
         <View
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
   list: {
     flexDirection: 'row',
     width: width,
-    height: 50,
+    height: 70,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
