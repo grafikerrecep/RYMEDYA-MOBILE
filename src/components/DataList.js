@@ -87,6 +87,7 @@ export function DataList(props) {
         onPress={() =>
           navigation.navigate('OrderDetail', {
             itemId: item.id,
+            setOrders: props.setOrders,
           })
         }
         style={[

@@ -16,7 +16,7 @@ function Orders({navigation}) {
     <>
       <View style={styles.container}>
         <Header />
-        <DataList datas={orders} navigation={navigation}/>
+        <DataList datas={orders} navigation={navigation} setOrders={setOrders}/>
       </View>
       <FloatingButton />
     </>

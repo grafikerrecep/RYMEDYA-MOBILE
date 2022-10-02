@@ -10,6 +10,7 @@ import {getOrder} from '../../services/orders/order';
 import Header from '../../components/Header';
 import BottomOrderControle from '../../components/BottomOrderControle';
 import DownloadDesign from '../../components/DownloadDesign';
+import {AcceptedOrderPage} from '../../components/AcceptedOrderPage';
 
 function OrderDetail({navigation, route}) {
   const id = route.params.itemId;
@@ -23,17 +24,12 @@ function OrderDetail({navigation, route}) {
       <View style={styles.container}>
         <Header />
         <DownloadDesign image={order.images} />
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: Dimensions.get('screen').height * 0.25,
-          }}>
-          <Text>Order Detail</Text>
-        </View>
+
+        {order.status === 'pending' ? null : order.status === 'accepted' ? (
+          <AcceptedOrderPage />
+        ) : null}
         <View style={{position: 'absolute', bottom: 0}}>
-          <BottomOrderControle />
+          <BottomOrderControle order={order} setOrder={setOrder} setOrders={route.params.setOrders}/>
         </View>
       </View>
     </>

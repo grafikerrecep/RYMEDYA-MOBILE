@@ -10,18 +10,25 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button} from '@rneui/themed';
 import {CheckBox, Icon} from '@rneui/themed';
+import {rejectOrder} from '../services/orders/order';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
 
-function BottomOrderControle() {
+function BottomOrderControle(props) {
   const [isAdmin, setIsAdmin] = useState(false);
+  const {order, setOrder, setOrders} = props;
 
   useEffect(() => {
     AsyncStorage.getItem('isAdmin').then(value => {
       setIsAdmin(value);
     });
   }, []);
+
+  const rejectedAccepted = () => {
+    order.status = 'rejected';
+    rejectOrder(order, setOrder, setOrders);
+  };
 
   return (
     <>
@@ -34,41 +41,93 @@ function BottomOrderControle() {
         ) : (
           <>
             <View style={styles.upComponent}>
-              <Button
-                title="Tasarımı Onayla"
-                loading={false}
-                loadingProps={{size: 'small', color: 'white'}}
-                buttonStyle={{
-                  backgroundColor: '#23C6FC',
-                  borderRadius: 5,
-                }}
-                titleStyle={{fontWeight: 'bold', fontSize: 18}}
-                containerStyle={[styles.upButton, {backgroundColor: '#23C6FC'}]}
-                onPress={() => console.log('aye')}>
-                <Icon
-                  type="material"
-                  name="check-circle-outline"
-                  color="white"
-                  size={30}
-                />
-                {''}
-                Tasarımı Onayla
-              </Button>
-              <Button
-                title="Tasarımı Onayla"
-                loading={false}
-                loadingProps={{size: 'small', color: 'white'}}
-                buttonStyle={{
-                  backgroundColor: '#00D8C1',
-                  borderRadius: 5,
-                }}
-                titleStyle={{fontWeight: 'bold', fontSize: 18}}
-                containerStyle={[styles.upButton, {backgroundColor: '#00D8C1'}]}
-                onPress={() => console.log('aye')}>
-                <Icon type="material" name="replay" color="white" size={30} />
-                {''}
-                Revize İste
-              </Button>
+              {order.status === 'pending' ? (
+                <Button
+                  title="Tasarımı Onayla"
+                  loading={false}
+                  loadingProps={{size: 'small', color: 'white'}}
+                  buttonStyle={{
+                    backgroundColor: '#23C6FC',
+                    borderRadius: 5,
+                  }}
+                  titleStyle={{fontWeight: 'bold', fontSize: 18}}
+                  containerStyle={[
+                    styles.upButton,
+                    {backgroundColor: '#23C6FC'},
+                  ]}
+                  onPress={() => console.log('aye')}>
+                  <Icon
+                    type="material"
+                    name="radio-button-unchecked"
+                    color="white"
+                    size={30}
+                  />
+                  {''}
+                  Tasarımı Onayla
+                </Button>
+              ) : order.status === 'accepted' ? (
+                <Button
+                  title="Onayladınız"
+                  loading={false}
+                  loadingProps={{size: 'small', color: 'white'}}
+                  buttonStyle={{
+                    backgroundColor: '#00D8C1',
+                    borderRadius: 5,
+                  }}
+                  titleStyle={{fontWeight: 'bold', fontSize: 18}}
+                  containerStyle={[
+                    styles.upButton,
+                    {backgroundColor: '#00D8C1'},
+                  ]}>
+                  <Icon
+                    type="material"
+                    name="check-circle-outline"
+                    color="white"
+                    size={30}
+                  />
+                  {''}
+                  Onayladınız
+                </Button>
+              ) : null}
+              {order.status === 'pending' ? (
+                <Button
+                  title="Tasarımı Onayla"
+                  loading={false}
+                  loadingProps={{size: 'small', color: 'white'}}
+                  buttonStyle={{
+                    backgroundColor: '#00D8C1',
+                    borderRadius: 5,
+                  }}
+                  titleStyle={{fontWeight: 'bold', fontSize: 18}}
+                  containerStyle={[
+                    styles.upButton,
+                    {backgroundColor: '#00D8C1'},
+                  ]}
+                  onPress={() => console.log('aye')}>
+                  <Icon type="material" name="replay" color="white" size={30} />
+                  {''}
+                  Revize İste
+                </Button>
+              ) : order.status === 'accepted' ? (
+                <Button
+                  title="Tasarımı Onayla"
+                  loading={false}
+                  loadingProps={{size: 'small', color: 'white'}}
+                  buttonStyle={{
+                    backgroundColor: '#FF1E1E',
+                    borderRadius: 5,
+                  }}
+                  titleStyle={{fontWeight: 'bold', fontSize: 18}}
+                  containerStyle={[
+                    styles.upButton,
+                    {backgroundColor: '#FF1E1E'},
+                  ]}
+                  onPress={rejectedAccepted}>
+                  <Icon type="material" name="replay" color="white" size={30} />
+                  {''}
+                  Onay İptali İste
+                </Button>
+              ) : null}
             </View>
             <View style={styles.bottomTextContainer}>
               <Text style={styles.bottomText}>
@@ -79,12 +138,18 @@ function BottomOrderControle() {
             </View>
             <View style={styles.miniLinkContainer}>
               <View>
-                <TouchableOpacity onPress={() => Linking.openURL('https://www.rymedya.com/')}>
+                <TouchableOpacity
+                  onPress={() => Linking.openURL('https://www.rymedya.com/')}>
                   <Text style={styles.miniLink}>RYMedya Ana Sayfa</Text>
                 </TouchableOpacity>
               </View>
               <View style={{flex: 1, flexWrap: 'wrap-reverse'}}>
-                <TouchableOpacity onPress={() => Linking.openURL('https://www.rymedya.com/mesafeli-satis-sozlesmesi/')}>
+                <TouchableOpacity
+                  onPress={() =>
+                    Linking.openURL(
+                      'https://www.rymedya.com/mesafeli-satis-sozlesmesi/',
+                    )
+                  }>
                   <Text style={[styles.miniLink]}>
                     Mesafeli Satış Sözleşmesi
                   </Text>
