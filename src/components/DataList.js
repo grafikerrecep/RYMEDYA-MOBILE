@@ -46,6 +46,8 @@ export function DataList(props) {
               ? 'Onaylandı'
               : item.status === 'pending'
               ? 'Beklemede'
+              : item.status === 'accepted_design'
+              ? 'Tasarım Onayında'
               : 'Reddedildi'}
           </Text>
         </View>
@@ -64,7 +66,7 @@ export function DataList(props) {
               zIndex: 100,
               justifyContent: 'center',
               alignItems: 'center',
-              borderRadius: 25
+              borderRadius: 25,
             }}>
             <Text
               style={{

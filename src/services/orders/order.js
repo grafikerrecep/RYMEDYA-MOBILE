@@ -13,6 +13,18 @@ export const getOrder = (id, setOrder) => {
   });
 };
 
+
+export const acceptOrder = (order, setOrder, setOrders) => {
+  axios
+    .put(`${API_URL}/api/offer/${order.id}`, {
+      status: 'accepted',
+    })
+    .then(res => {
+      setOrder(res.data.data);
+      getOrders(setOrders);
+    });
+}
+
 export const rejectOrder = (order, setOrder, setOrders) => {
   axios
     .put(`${API_URL}/api/offer/${order.id}`, order)

@@ -1,20 +1,13 @@
-import {Button, Icon} from '@rneui/themed';
-import {API_URL} from '@env';
+import {Icon} from '@rneui/themed';
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  PermissionsAndroid,
-} from 'react-native';
-import RNFetchBlob from 'rn-fetch-blob';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {checkPermission} from '../utils/DownloadImage';
 
 function DownloadDesign(props) {
   const [path, setPath] = useState('');
   const {image} = props;
 
-  const checkPermission = async () => {
+  /* const checkPermission = async () => {
     if (Platform.OS === 'ios') {
       downloadImage();
     } else {
@@ -40,9 +33,9 @@ function DownloadDesign(props) {
         console.warn(err);
       }
     }
-  };
+  }; */
 
-  const downloadImage = () => {
+  /*  const downloadImage = () => {
     if (path) {
       const date = new Date();
       const image_URL = API_URL + `/${path}`;
@@ -75,7 +68,7 @@ function DownloadDesign(props) {
 
   const getExtention = filename => {
     return /[.]/.exec(filename) ? /[^.]+$/.exec(filename) : undefined;
-  };
+  }; */
 
   useEffect(() => {
     if (image) {
@@ -103,7 +96,12 @@ function DownloadDesign(props) {
             alignItems: 'center',
             marginRight: 30,
           }}>
-          <TouchableOpacity onPress={checkPermission}>
+          <TouchableOpacity
+            onPress={async () => {
+              var check = await checkPermission(path);
+              console.log(check);
+              if (check) alert('Dosya indirildi.');
+            }}>
             <Icon
               type="material"
               name="file-download"
