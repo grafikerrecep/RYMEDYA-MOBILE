@@ -6,11 +6,12 @@ import {
   Text,
   TouchableOpacity,
   Linking,
+  TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Button} from '@rneui/themed';
 import {CheckBox, Icon} from '@rneui/themed';
-import { rejectOrder, acceptOrder } from '../services/orders/order';
+import {rejectOrder, acceptOrder} from '../services/orders/order';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -21,6 +22,7 @@ function BottomOrderControle(props) {
 
   useEffect(() => {
     AsyncStorage.getItem('isAdmin').then(value => {
+      console.log(value);
       setIsAdmin(value);
     });
   }, []);
@@ -33,16 +35,102 @@ function BottomOrderControle(props) {
   const acceptedOrder = () => {
     order.status = 'accepted';
     acceptOrder(order, setOrder, setOrders);
-  }
+  };
 
   return (
     <>
       <View style={styles.container}>
-        {isAdmin == true ? (
-          <View>
-            <Text>buton1</Text>
-            <Text>buton2</Text>
-          </View>
+        {isAdmin ? (
+          <>
+            <View style={styles.upComponent}>
+              <TextInput style={styles.input} placeholder="Müşterinin cep numarası" />
+            </View>
+            <View style={[styles.upComponent, {marginBottom: 25}]}>
+              <Button
+                title="Tasarımı Yükle"
+                loading={false}
+                loadingProps={{size: 'small', color: 'white'}}
+                buttonStyle={{
+                  backgroundColor: '#23C6FC',
+                  borderRadius: 5,
+                }}
+                titleStyle={{fontWeight: 'bold', fontSize: 18}}
+                containerStyle={[styles.upButton, {backgroundColor: '#23C6FC'}]}
+                onPress={() => console.log('aye')}>
+                <Icon
+                  type="material"
+                  name="file-upload"
+                  color="white"
+                  size={30}
+                />
+                {''}
+                Tasarımı Yükle
+              </Button>
+              <Button
+                title="Tasarımı Onayla"
+                loading={false}
+                loadingProps={{size: 'small', color: 'red'}}
+                buttonStyle={{
+                  backgroundColor: 'red',
+                  borderRadius: 5,
+                }}
+                titleStyle={{fontWeight: 'bold', fontSize: 18}}
+                containerStyle={[styles.upButton, {backgroundColor: 'red'}]}
+                onPress={() => console.log('aye')}>
+                <Icon
+                  type="material"
+                  name="delete"
+                  color="white"
+                  size={30}
+                />
+                {''}
+                Tasarımı Kaldır
+              </Button>
+            </View>
+            <View style={styles.bottomComponent}>
+              <Button
+                title="Tasarımı Onayla"
+                loading={false}
+                loadingProps={{size: 'small', color: 'white'}}
+                buttonStyle={{
+                  backgroundColor: '#00D8C1',
+                  borderRadius: 5,
+                }}
+                titleStyle={{fontWeight: 'bold', fontSize: 18}}
+                containerStyle={[styles.upButton, {backgroundColor: '#00D8C1'}]}
+                onPress={() => console.log('aye')}>
+                <Icon
+                  type="material"
+                  name="send"
+                  color="white"
+                  size={30}
+                  style={{transform: [{ rotate: '312deg'}]}}
+                />
+                {' '}
+                Müşteriye Yaz
+              </Button>
+              <Button
+                title="Tasarımı Onayla"
+                loading={false}
+                loadingProps={{size: 'small', color: 'white'}}
+                buttonStyle={{
+                  backgroundColor: '#FF731D',
+                  borderRadius: 5,
+                }}
+                titleStyle={{fontWeight: 'bold', fontSize: 18}}
+                containerStyle={[styles.upButton, {backgroundColor: '#FF731D'}]}
+                onPress={() => console.log('aye')}>
+                <Icon
+                  type="material"
+                  name="campaign"
+                  color="white"
+                  size={30}
+                />
+                {''}
+                Duyuru Yap
+              </Button>
+            </View>
+          </>
         ) : (
           <>
             <View style={styles.upComponent}>
@@ -228,6 +316,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginVertical: 5,
   },
+  bottomComponent: {
+    flex: 3,
+    flexShrink: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 25
+  },
   upButton: {
     width: width * 0.47,
     textAlign: 'center',
@@ -245,6 +340,20 @@ const styles = StyleSheet.create({
   bottomText: {
     color: 'black',
     fontWeight: '400',
+  },
+  input: {
+    width: width * 0.95,
+    height: 55,
+    margin: 5,
+    paddingLeft: 12,
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderRightWidth: 0,
+    borderBottomWidth: 0,
+    borderLeftWidth: 4,
+    backgroundColor: '#E8E8E8',
+    borderLeftColor: '#00D8C1',
+    color: '#BFBFBF',
   },
   miniLinkContainer: {
     flex: 1,

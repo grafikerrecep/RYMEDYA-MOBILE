@@ -77,6 +77,7 @@ export default function App() {
         const userData = login(data.name, data.phone);
         userData.then(response => {
           if (response.data) {
+            console.log(response.data)
             dispatch({type: 'SIGN_IN', token: response.data.user.api_token, isAdmin: response.data.isAdmin});
             axios.defaults.headers.common = {
               Authorization: `Bearer ${response.data.user.api_token}`,
