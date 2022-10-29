@@ -45,7 +45,6 @@ export default function App() {
   );
 
   React.useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken, isAdmin;
 
@@ -56,13 +55,7 @@ export default function App() {
           Authorization: `Bearer ${userToken}`,
         };
       } catch (e) {
-        // Restoring token failed
       }
-
-      // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
       dispatch({type: 'RESTORE_TOKEN', token: userToken, isAdmin: isAdmin});
     };
 
@@ -77,14 +70,14 @@ export default function App() {
         const userData = login(data.name, data.phone);
         userData.then(response => {
           if (response.data) {
-            console.log(response.data)
             dispatch({type: 'SIGN_IN', token: response.data.user.api_token, isAdmin: response.data.isAdmin});
             axios.defaults.headers.common = {
               Authorization: `Bearer ${response.data.user.api_token}`,
             };
+            AsyncStorage.setItem('isAdmin', response.data.is_admin);
+            console.log(response.data.is_admin)
             if (data.check) {
               AsyncStorage.setItem('userToken', response.data.user.api_token);
-              AsyncStorage.setItem('isAdmin', response.data.is_admin);
             }
           }
         });
@@ -93,15 +86,11 @@ export default function App() {
       signOut: () => {
         setIsLoading(true);
         AsyncStorage.removeItem('userToken');
+        AsyncStorage.removeItem('isAdmin');
         dispatch({type: 'SIGN_OUT'});
         setIsLoading(false);
       },
       signUp: async data => {
-        // In a production app, we need to send user data to server and get a token
-        // We will also need to handle errors if sign up failed
-        // After getting token, we need to persist the token using `SecureStore`
-        // In the example, we'll use a dummy token
-
         dispatch({type: 'SIGN_IN', token: 'dummy-auth-token'});
       },
     }),
